@@ -1,11 +1,11 @@
 import SidebarNoteItem from '@/components/SidebarNoteItem';
 import { getAllNotes } from '@/lib/redis';
 import { sleep } from '@/lib/utils';
+import SidebarNoteListFilter from './SidebarNoteListFilter';
 
 export default async function NoteList() {
   // await sleep(1000);
   const notes = await getAllNotes()
-
   const arr = Object.entries(notes);
 
   if (arr.length == 0) {
@@ -14,11 +14,11 @@ export default async function NoteList() {
     </div>
   }
 
-  return <ul className="notes-list">
-    {arr.map(([noteId, note]) => {
-      return <li key={noteId}>
-        <SidebarNoteItem noteId={noteId} note={JSON.parse(note)} />
-      </li>
+  return (
+    <SidebarNoteListFilter>
+      {Object.entries(notes).map(([noteId, note]) => {
+        return <SidebarNoteItem key={noteId} noteId={noteId} note={JSON.parse(note)} />
     })}
-  </ul>
+    </SidebarNoteListFilter>
+    )
 }

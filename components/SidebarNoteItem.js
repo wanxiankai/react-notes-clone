@@ -1,4 +1,3 @@
-import dayjs from 'dayjs';
 import SidebarNoteItemContent from '@/components/SidebarNoteItemContent';
 import SidebarNoteItemHeader from '@/components/SidebarNoteItemHeader';
 
