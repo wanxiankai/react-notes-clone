@@ -1,5 +1,10 @@
 import Sidebar from '@/components/Sidebar'
 import './styles.css'
+import { locales } from '@/config.js'
+
+export async function generateStaticParams() {
+  return locales.map((lng) => ({ lng }))
+}
 
 export const metadata = {
   title: 'Create Next App',
