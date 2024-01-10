@@ -2,6 +2,7 @@
 import { match } from '@formatjs/intl-localematcher'
 import Negotiator from 'negotiator'
 import { locales, defaultLocale } from '@/config.js'
+import { NextResponse } from 'next/server'
 
 const publicFile = /\.(.*)$/
 const excludeFile = ['logo.svg']
@@ -28,6 +29,11 @@ export function middleware(request) {
   // 获取匹配的 locale
   const locale = getLocale(request)
   request.nextUrl.pathname = `/${locale}${pathname}`
+
+  if (locale == defaultLocale) {
+    return NextResponse.rewrite(request.nextUrl)
+  }
+
   // 重定向，如 /products 重定向到 /en-US/products
   return Response.redirect(request.nextUrl)
 }
