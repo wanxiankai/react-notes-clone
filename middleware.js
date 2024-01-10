@@ -3,6 +3,8 @@ import { match } from '@formatjs/intl-localematcher'
 import Negotiator from 'negotiator'
 import { locales, defaultLocale } from '@/config.js'
 
+const publicFile = /\.(.*)$/
+const excludeFile = ['logo.svg']
 
 function getLocale(request) { 
   const headers = { 'accept-language': request.headers.get('accept-language') || '' };
@@ -20,6 +22,8 @@ export function middleware(request) {
  
   if (pathnameHasLocale) return
 
+  // 如果是 public 文件，不重定向
+  if (publicFile.test(pathname) && excludeFile.indexOf(pathname.substr(1)) == -1) return
  
   // 获取匹配的 locale
   const locale = getLocale(request)
