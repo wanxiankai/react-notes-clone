@@ -19,7 +19,7 @@ export async function POST(request) {
 
     // 创建上传目录
     const buffer = Buffer.from(await file.arrayBuffer());
-    const relativeUploadDir = `/upload/${dayjs().format('YY-MM-DD')}`
+    const relativeUploadDir = `/uploads/${dayjs().format('YY-MM-DD')}`
     const uploadDir = join(process.cwd(), 'public', relativeUploadDir)
 
     try {
