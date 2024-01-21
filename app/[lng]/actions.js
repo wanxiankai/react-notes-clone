@@ -5,6 +5,10 @@ import { addNote, updateNote, delNote } from '@/lib/redis';
 import { revalidatePath } from 'next/cache';
 import { z } from "zod";
 import { sleep } from '@/lib/utils';
+import dayjs from 'dayjs';
+import { join } from 'path'
+import { stat, mkdir, writeFile } from 'fs/promises';
+import mime from 'mime'
 
 const schema = z.object({
   title: z.string(),
@@ -49,4 +53,50 @@ export async function deleteNote(formData) {
   delNote(noteId)
   revalidatePath('/', 'layout')
   redirect('/')
+}
+
+export async function importNode(formData) {
+  const file = formData.get('file')
+
+  if (!file) {
+    return { error: 'File is required.' }
+  }
+
+  const buffer = Buffer.from(await file.arrayBuffer());
+  const relativeUploadDir = `/uploads/${dayjs().format('YY-MM-DD')}`;
+  const uploadDir = join(process.cwd(), 'public', relativeUploadDir)
+
+  try {
+    await stat(uploadDir)
+  } catch (error) {
+    if (error.code === 'ENOENT') {
+      await mkdir(uploadDir, { recursive: true })
+    } else {
+      console.error(e)
+      return { error: "1111something went wrong" }
+    }
+  }
+
+  try {
+    const uniqueSuffix = `${Math.random().toString(36).slice(-6)}`;
+    const filename = file.name.replace(/\.[^/.]+$/, '');
+    const uniqueFilename = `${filename}-${uniqueSuffix}.${mime.getExtension(file.type)}`;
+    await writeFile(`${uploadDir}/${uniqueFilename}`, buffer)
+
+    const res = await addNote(JSON.stringify({
+      title: filename,
+      content: buffer.toString('utf-8')
+    }))
+
+    revalidatePath('/', 'layout')
+
+    return {
+      fileUrl: `${relativeUploadDir}/${uniqueFilename}`,
+      uid: res
+    }
+  } catch (error) {
+    console.error(error)
+    return { error: "222something went wrong" }
+  }
+
 }
