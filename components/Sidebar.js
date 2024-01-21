@@ -5,6 +5,7 @@ import SidebarNoteList from '@/components/SidebarNoteList';
 import EditButton from '@/components/EditButton';
 import NoteListSkeleton from '@/components/NoteListSkeleton';
 import SidebarSearchField from './SidebarSearchField';
+import SidebarImport from './SidebarImport';
 
 // // 移除数据请求部分，为 SidebarNoteList 添加 Suspense 以及 fallback UI NoteListSkeleton
 export default async function Sidebar() {
@@ -34,6 +35,7 @@ export default async function Sidebar() {
             <SidebarNoteList />
           </Suspense>
         </nav>
+        <SidebarImport />
       </section>
     </>
   )
