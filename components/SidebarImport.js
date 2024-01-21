@@ -30,6 +30,7 @@ export default function SidebarImport(){
             
             const data = await response.json();
             router.push(`/note/${data.uid}`)
+            router.refresh();
         } catch (error) {
             console.error("4444something went wrong")
         }
