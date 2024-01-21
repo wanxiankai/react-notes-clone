@@ -48,7 +48,7 @@ export async function saveNote(prevState, formData) {
   return { message: `Add Success!` }
 }
 
-export async function deleteNote(formData) {
+export async function deleteNote(prevState, formData) {
   const noteId = formData.get('noteId')
   delNote(noteId)
   revalidatePath('/', 'layout')
