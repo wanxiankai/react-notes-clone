@@ -1,9 +1,10 @@
 'use client'
-import React from 'react'
+import React, { useTransition } from 'react'
 import { useRouter } from 'next/navigation'
 
 export default function SidebarImport(){
     const router = useRouter()
+    const [isPending, startTransition] = useTransition()
     const onChange = async (e) => {
         console.log('onChange', e.target)
         const fileInput = e.target;
@@ -29,8 +30,8 @@ export default function SidebarImport(){
             }
             
             const data = await response.json();
-            router.push(`/note/${data.uid}`)
-            router.refresh();
+            startTransition(() => router.push(`/note/${data.uid}`))
+            startTransition(() => router.refresh())
         } catch (error) {
             console.error("4444something went wrong")
         }
