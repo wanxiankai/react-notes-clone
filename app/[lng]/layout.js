@@ -1,6 +1,7 @@
-import Sidebar from '@/components/Sidebar'
 import './styles.css'
 import { locales } from '@/config.js'
+import Sidebar from '@/components/Sidebar'
+import Header from 'components/Header'
 
 export async function generateStaticParams() {
   return locales.map((lng) => ({ lng }))
@@ -22,6 +23,7 @@ export default function RootLayout(
     <html lang={lng}>
       <body>
         <div className="container">
+          <Header />
           <div className="main">
             <Sidebar />
             <section className="col note-viewer">{children}</section>
