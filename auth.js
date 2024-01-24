@@ -26,8 +26,11 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
                     throw new Error("user was not found and could not be created")
                 }
                 return user
-            }
+            },
         }), Github],
+    pages: {
+        signIn: '/auth/signin'
+    },
     callbacks: {
         authorized({ request, auth }) {
             const { pathname } = request.nextUrl
