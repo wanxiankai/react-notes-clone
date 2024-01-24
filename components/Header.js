@@ -1,4 +1,5 @@
 import { auth, signIn, signOut } from "auth"
+import Link from "next/link"
 
 function SignIn({ provider, ...props }) {
     return (
@@ -34,6 +35,7 @@ export default async function Header() {
     const session = await auth()
     return (
         <header style={{ display: 'flex', justifyContent: 'space-around' }}>
+            <Link href="/client">Client Side component</Link>
             {
                 session?.user ?
                     <span>{session.user.name}<SignOut /></span>
